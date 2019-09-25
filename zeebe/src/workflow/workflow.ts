@@ -43,7 +43,7 @@ export class Workflow {
       WORKFLOW_ID,
       {
         id: "123",
-        name: "Donald Duck"
+        name: "Donald Duck2"
       }
     );
     console.log(result);
