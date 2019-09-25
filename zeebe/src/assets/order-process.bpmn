@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:zeebe="http://camunda.org/schema/zeebe/1.0" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" id="Definitions_0mb9laf" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Zeebe Modeler" exporterVersion="0.6.2">
+  <bpmn:process id="createGithubIssue" name="createGithubIssue" isExecutable="true">
+    <bpmn:startEvent id="StartEvent_1">
+      <bpmn:outgoing>SequenceFlow_0dy3vgv</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:endEvent id="EndEvent_0b8ijay">
+      <bpmn:incoming>SequenceFlow_0vlmh1e</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:serviceTask id="risk-prevention" name="Risk Prevention">
+      <bpmn:extensionElements>
+        <zeebe:taskDefinition type="CAMUNDA-HTTP" retries="1" />
+        <zeebe:taskHeaders>
+          <zeebe:header key="method" value="POST" />
+          <zeebe:header key="url" value="https://api.github.com/repos/${project}/${repo}/issues" />
+        </zeebe:taskHeaders>
+      </bpmn:extensionElements>
+      <bpmn:incoming>SequenceFlow_0dy3vgv</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_0vlmh1e</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:sequenceFlow id="SequenceFlow_0dy3vgv" sourceRef="StartEvent_1" targetRef="risk-prevention" />
+    <bpmn:sequenceFlow id="SequenceFlow_0vlmh1e" sourceRef="risk-prevention" targetRef="EndEvent_0b8ijay" />
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="createGithubIssue">
+      <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_1">
+        <dc:Bounds x="179" y="80" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_0b8ijay_di" bpmnElement="EndEvent_0b8ijay">
+        <dc:Bounds x="605" y="80" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="ServiceTask_1cirqys_di" bpmnElement="risk-prevention">
+        <dc:Bounds x="318" y="58" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_0dy3vgv_di" bpmnElement="SequenceFlow_0dy3vgv">
+        <di:waypoint x="215" y="98" />
+        <di:waypoint x="318" y="98" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SequenceFlow_0vlmh1e_di" bpmnElement="SequenceFlow_0vlmh1e">
+        <di:waypoint x="418" y="98" />
+        <di:waypoint x="605" y="98" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>
