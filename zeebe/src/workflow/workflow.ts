@@ -1,4 +1,5 @@
 import * as ZB from "zeebe-node";
+import * as dotenv from 'dotenv';
 
 dotenv.config();
 
@@ -10,6 +11,7 @@ const clientSecret = process.env.CC_CLIENT_SECRET;
 const authUrl = process.env.CC_AUTH_URL;
 
 const WORKFLOW = '../assets/order-process.bpmn';
+const WORKFLOW_ID = 'order-process';
 
 export class Workflow {
   private zeebeClient;
@@ -38,9 +40,10 @@ export class Workflow {
   public async startWorkflow() {
     console.log(`starting workflow instance`);
     const result = await this.zeebeClient.createWorkflowInstance(
-      "createGithubIssue",
+      WORKFLOW_ID,
       {
-        title: "issue title"
+        id: "123",
+        name: "Donald Duck"
       }
     );
     console.log(result);

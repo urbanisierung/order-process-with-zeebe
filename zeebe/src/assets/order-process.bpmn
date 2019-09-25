@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:zeebe="http://camunda.org/schema/zeebe/1.0" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" id="Definitions_0mb9laf" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Zeebe Modeler" exporterVersion="0.6.2">
-  <bpmn:process id="createGithubIssue" name="createGithubIssue" isExecutable="true">
+  <bpmn:process id="order-process" name="order-process" isExecutable="true">
     <bpmn:startEvent id="StartEvent_1">
       <bpmn:outgoing>SequenceFlow_0dy3vgv</bpmn:outgoing>
     </bpmn:startEvent>
@@ -12,7 +12,7 @@
         <zeebe:taskDefinition type="CAMUNDA-HTTP" retries="1" />
         <zeebe:taskHeaders>
           <zeebe:header key="method" value="POST" />
-          <zeebe:header key="url" value="https://api.github.com/repos/${project}/${repo}/issues" />
+          <zeebe:header key="url" value="${firebase-base-url}/riskPreventionCheck" />
         </zeebe:taskHeaders>
       </bpmn:extensionElements>
       <bpmn:incoming>SequenceFlow_0dy3vgv</bpmn:incoming>
@@ -22,7 +22,7 @@
     <bpmn:sequenceFlow id="SequenceFlow_0vlmh1e" sourceRef="risk-prevention" targetRef="EndEvent_0b8ijay" />
   </bpmn:process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
-    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="createGithubIssue">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="order-process">
       <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_1">
         <dc:Bounds x="179" y="80" width="36" height="36" />
       </bpmndi:BPMNShape>
