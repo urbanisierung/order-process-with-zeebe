@@ -17,3 +17,9 @@ exports.riskPreventionCheck = functions.https.onRequest((request, response) => {
 
     response.send(result);
 });
+
+exports.getGifUrl = functions.https.onRequest((request, response) => {
+    const data = request.body.data;
+    const embedUrl = data[0].embed_url;
+    response.send({url: embedUrl});
+});

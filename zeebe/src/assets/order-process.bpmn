@@ -5,7 +5,7 @@
       <bpmn:outgoing>SequenceFlow_0dy3vgv</bpmn:outgoing>
     </bpmn:startEvent>
     <bpmn:endEvent id="EndEvent_0b8ijay" name="order successfully fulfilled">
-      <bpmn:incoming>SequenceFlow_06ade6m</bpmn:incoming>
+      <bpmn:incoming>SequenceFlow_19eph0y</bpmn:incoming>
     </bpmn:endEvent>
     <bpmn:serviceTask id="risk-prevention" name="Risk Prevention">
       <bpmn:extensionElements>
@@ -42,13 +42,25 @@
         </zeebe:taskHeaders>
         <zeebe:taskDefinition type="CAMUNDA-HTTP" retries="1" />
         <zeebe:ioMapping>
-          <zeebe:output source="data[0]" target="gif_url" />
+          <zeebe:output source="data" target="data" />
         </zeebe:ioMapping>
       </bpmn:extensionElements>
       <bpmn:incoming>SequenceFlow_0q136f8</bpmn:incoming>
       <bpmn:outgoing>SequenceFlow_06ade6m</bpmn:outgoing>
     </bpmn:serviceTask>
-    <bpmn:sequenceFlow id="SequenceFlow_06ade6m" sourceRef="ServiceTask_19zavz5" targetRef="EndEvent_0b8ijay" />
+    <bpmn:sequenceFlow id="SequenceFlow_06ade6m" sourceRef="ServiceTask_19zavz5" targetRef="ServiceTask_0vsjuhe" />
+    <bpmn:serviceTask id="ServiceTask_0vsjuhe" name="Get URL">
+      <bpmn:extensionElements>
+        <zeebe:taskHeaders>
+          <zeebe:header key="method" value="POST" />
+          <zeebe:header key="url" value="${firebase-base-url}/getGifUrl" />
+        </zeebe:taskHeaders>
+        <zeebe:taskDefinition type="CAMUNDA-HTTP" retries="1" />
+      </bpmn:extensionElements>
+      <bpmn:incoming>SequenceFlow_06ade6m</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_19eph0y</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:sequenceFlow id="SequenceFlow_19eph0y" sourceRef="ServiceTask_0vsjuhe" targetRef="EndEvent_0b8ijay" />
   </bpmn:process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
     <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="order-process">
@@ -83,9 +95,9 @@
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge id="SequenceFlow_0q136f8_di" bpmnElement="SequenceFlow_0q136f8">
         <di:waypoint x="518" y="98" />
-        <di:waypoint x="657" y="98" />
+        <di:waypoint x="617" y="98" />
         <bpmndi:BPMNLabel>
-          <dc:Bounds x="580" y="80" width="16" height="14" />
+          <dc:Bounds x="560" y="80" width="16" height="14" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNShape id="EndEvent_10w0yiz_di" bpmnElement="EndEvent_10w0yiz">
@@ -103,10 +115,17 @@
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNShape id="ServiceTask_19zavz5_di" bpmnElement="ServiceTask_19zavz5">
-        <dc:Bounds x="657" y="58" width="100" height="80" />
+        <dc:Bounds x="617" y="58" width="100" height="80" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge id="SequenceFlow_06ade6m_di" bpmnElement="SequenceFlow_06ade6m">
-        <di:waypoint x="757" y="98" />
+        <di:waypoint x="717" y="98" />
+        <di:waypoint x="740" y="98" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="ServiceTask_0vsjuhe_di" bpmnElement="ServiceTask_0vsjuhe">
+        <dc:Bounds x="740" y="58" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_19eph0y_di" bpmnElement="SequenceFlow_19eph0y">
+        <di:waypoint x="840" y="98" />
         <di:waypoint x="870" y="98" />
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
