@@ -37,14 +37,10 @@ export class Workflow {
     console.log(JSON.stringify(topology, null, 2));
   }
 
-  public async startWorkflow() {
+  public async startWorkflow(data) {
     console.log(`starting workflow instance`);
     const result = await this.zeebeClient.createWorkflowInstance(
-      WORKFLOW_ID,
-      {
-        id: "123",
-        name: "Donald Duck2"
-      }
+      WORKFLOW_ID, data
     );
     console.log(result);
   }

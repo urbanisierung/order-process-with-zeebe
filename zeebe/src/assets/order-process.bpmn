@@ -5,7 +5,7 @@
       <bpmn:outgoing>SequenceFlow_0dy3vgv</bpmn:outgoing>
     </bpmn:startEvent>
     <bpmn:endEvent id="EndEvent_0b8ijay" name="order successfully fulfilled">
-      <bpmn:incoming>SequenceFlow_19eph0y</bpmn:incoming>
+      <bpmn:incoming>SequenceFlow_01xyqlv</bpmn:incoming>
     </bpmn:endEvent>
     <bpmn:serviceTask id="risk-prevention" name="Risk Prevention">
       <bpmn:extensionElements>
@@ -49,18 +49,36 @@
       <bpmn:outgoing>SequenceFlow_06ade6m</bpmn:outgoing>
     </bpmn:serviceTask>
     <bpmn:sequenceFlow id="SequenceFlow_06ade6m" sourceRef="ServiceTask_19zavz5" targetRef="ServiceTask_0vsjuhe" />
-    <bpmn:serviceTask id="ServiceTask_0vsjuhe" name="Get URL">
+    <bpmn:serviceTask id="ServiceTask_0vsjuhe" name="Prepare mail data">
       <bpmn:extensionElements>
         <zeebe:taskHeaders>
           <zeebe:header key="method" value="POST" />
-          <zeebe:header key="url" value="${firebase-base-url}/getGifUrl" />
+          <zeebe:header key="url" value="${firebase-base-url}/prepareMailData" />
         </zeebe:taskHeaders>
         <zeebe:taskDefinition type="CAMUNDA-HTTP" retries="1" />
       </bpmn:extensionElements>
       <bpmn:incoming>SequenceFlow_06ade6m</bpmn:incoming>
       <bpmn:outgoing>SequenceFlow_19eph0y</bpmn:outgoing>
     </bpmn:serviceTask>
-    <bpmn:sequenceFlow id="SequenceFlow_19eph0y" sourceRef="ServiceTask_0vsjuhe" targetRef="EndEvent_0b8ijay" />
+    <bpmn:sequenceFlow id="SequenceFlow_19eph0y" sourceRef="ServiceTask_0vsjuhe" targetRef="ServiceTask_1qoj7so" />
+    <bpmn:serviceTask id="ServiceTask_1qoj7so" name="Send welcome mail">
+      <bpmn:extensionElements>
+        <zeebe:taskDefinition type="CAMUNDA-HTTP" retries="1" />
+        <zeebe:ioMapping>
+          <zeebe:input source="from" target="from" />
+          <zeebe:input source="personalizations" target="personalizations" />
+          <zeebe:input source="template_id" target="template_id" />
+        </zeebe:ioMapping>
+        <zeebe:taskHeaders>
+          <zeebe:header key="method" value="POST" />
+          <zeebe:header key="url" value="https://api.sendgrid.com/v3/mail/send" />
+          <zeebe:header key="Authorization" value="Bearer ${sgApiKey}" />
+        </zeebe:taskHeaders>
+      </bpmn:extensionElements>
+      <bpmn:incoming>SequenceFlow_19eph0y</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_01xyqlv</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:sequenceFlow id="SequenceFlow_01xyqlv" sourceRef="ServiceTask_1qoj7so" targetRef="EndEvent_0b8ijay" />
   </bpmn:process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
     <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="order-process">
@@ -71,9 +89,9 @@
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="EndEvent_0b8ijay_di" bpmnElement="EndEvent_0b8ijay">
-        <dc:Bounds x="870" y="80" width="36" height="36" />
+        <dc:Bounds x="1060" y="80" width="36" height="36" />
         <bpmndi:BPMNLabel>
-          <dc:Bounds x="844" y="123" width="89" height="27" />
+          <dc:Bounds x="1034" y="123" width="89" height="27" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="ServiceTask_1cirqys_di" bpmnElement="risk-prevention">
@@ -101,15 +119,15 @@
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNShape id="EndEvent_10w0yiz_di" bpmnElement="EndEvent_10w0yiz">
-        <dc:Bounds x="870" y="263" width="36" height="36" />
+        <dc:Bounds x="1060" y="263" width="36" height="36" />
         <bpmndi:BPMNLabel>
-          <dc:Bounds x="854" y="306" width="68" height="14" />
+          <dc:Bounds x="1044" y="306" width="68" height="14" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge id="SequenceFlow_1n60cb6_di" bpmnElement="SequenceFlow_1n60cb6">
         <di:waypoint x="493" y="123" />
         <di:waypoint x="493" y="281" />
-        <di:waypoint x="870" y="281" />
+        <di:waypoint x="1060" y="281" />
         <bpmndi:BPMNLabel>
           <dc:Bounds x="505" y="199" width="7" height="14" />
         </bpmndi:BPMNLabel>
@@ -119,14 +137,21 @@
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge id="SequenceFlow_06ade6m_di" bpmnElement="SequenceFlow_06ade6m">
         <di:waypoint x="717" y="98" />
-        <di:waypoint x="740" y="98" />
+        <di:waypoint x="748" y="98" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNShape id="ServiceTask_0vsjuhe_di" bpmnElement="ServiceTask_0vsjuhe">
-        <dc:Bounds x="740" y="58" width="100" height="80" />
+        <dc:Bounds x="748" y="58" width="100" height="80" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge id="SequenceFlow_19eph0y_di" bpmnElement="SequenceFlow_19eph0y">
-        <di:waypoint x="840" y="98" />
-        <di:waypoint x="870" y="98" />
+        <di:waypoint x="848" y="98" />
+        <di:waypoint x="884" y="98" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="ServiceTask_1qoj7so_di" bpmnElement="ServiceTask_1qoj7so">
+        <dc:Bounds x="884" y="58" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_01xyqlv_di" bpmnElement="SequenceFlow_01xyqlv">
+        <di:waypoint x="984" y="98" />
+        <di:waypoint x="1060" y="98" />
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
