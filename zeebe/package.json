@@ -14,6 +14,7 @@
   "dependencies": {
     "@types/node": "^12.7.1",
     "dotenv": "^8.1.0",
+    "uuid": "^3.3.3",
     "winston": "^3.2.1",
     "zeebe-node": "^0.20.2"
   },

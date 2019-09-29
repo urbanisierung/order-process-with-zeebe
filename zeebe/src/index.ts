@@ -1,15 +1,20 @@
-import { Workflow } from "./workflow/workflow";
 import * as dotenv from "dotenv";
+import { v4 } from "uuid";
+import { Workflow } from "./workflow/workflow";
 
 dotenv.config();
 
 const workflow = new Workflow();
 
 const orderEnvelope = {
-  id: "123",
+  id: v4(),
+  orderCreatedAt: new Date().getTime(),
   customer: {
     name: "Adam",
     email: "i@adamurban.de"
+  },
+  payment: {
+    method: 'banktransfer'
   },
   orderLines: [
       {
