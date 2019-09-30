@@ -1,20 +1,7 @@
 import * as functions from 'firebase-functions';
 import * as admin from 'firebase-admin';
-// import { Logging } from '@google-cloud/logging';
 
 admin.initializeApp();
-// const logging = new Logging();
-// const log = logging.log('order-process-with-zeebe');
-
-// const METADATA = {
-//     resource: {
-//       type: 'cloud_function',
-//       labels: {
-//         function_name: 'order-audit',
-//         region: 'us-central1'
-//       }
-//     }
-//   };
 
 exports.riskPreventionCheck = functions.https.onRequest((request, response) => {
     const name = request.body.customer.name;
@@ -109,11 +96,4 @@ function audit(id: string, name: string, created: number) {
     const timesPassed = now - created;
     const value = `${id}:${name} / created: ${created} / time passed: ${timesPassed}`;
     console.log(value);
-    // const data = {
-    //     event: `${id}:${name}`,
-    //     value: `created: ${created} / time passed: ${timesPassed}`
-    // };
-    // const entry = log.entry(METADATA, data);
-    // const prom = log.write(entry);
-    // prom.resolve();
 }
