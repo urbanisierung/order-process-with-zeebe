@@ -5,52 +5,23 @@ import * as express from "express";
 import { Request, Response, NextFunction } from "express";
 
 admin.initializeApp();
-// admin.initializeApp({
-//   serviceAccountId:
-//     "firebase-adminsdk-e5njx@order-process-functions.iam.gserviceaccount.com"
-// });
-
-// firebase-adminsdk-x7z6q@order-process-functions.iam.gserviceaccount.com
-// firebase-adminsdk-e5njx@order-process-functions.iam.gserviceaccount.com
 
 const app = express();
 
-async function validateFirebaseIdToken(
-  req: Request,
-  res: Response,
-  next: NextFunction
-) {
-  if (
-    !req.body.authorization ||
-    !req.body.authorization.startsWith("Bearer ")
-  ) {
-    console.error("You are not allowed to be here!");
-    res.status(403).send("Unauthorized");
-    return;
-  }
-
-  let idToken;
-  if (req.body.authorization && req.body.authorization.startsWith("Bearer ")) {
-    console.log('Found "Authorization" header');
-    idToken = req.body.authorization.split("Bearer ")[1];
-  } else {
-    res.status(403).send("Unauthorized");
-    return;
-  }
-
-  try {
-      //admin.auth().verif
-    const decodedIdToken = await admin.auth().verifyIdToken(idToken);
-    console.log("ID Token correctly decoded", decodedIdToken);
-    // req.user = decodedIdToken;
+function verification(request: Request, response: Response, next: NextFunction) {
+  const jwt = require('jsonwebtoken');
+  const token = request.body.access_token;
+  console.log(token);
+  jwt.verify(token, `${functions.config().auth.secret}`, function(err: any, decoded: any) {
+    if (err) {
+      console.log(`Error verifying token: ${err}`);
+      response.status(500).json(err);
+    }
+    console.log('successfully verified!');
     next();
-    return;
-  } catch (error) {
-    console.error("Error while verifying Firebase ID token:", error);
-    res.status(403).send("Unauthorized");
-    return;
-  }
-}
+  });
+
+};
 
 app.post("/token", (request, response) => {
   const id = request.body.id;
@@ -69,7 +40,7 @@ app.post("/token", (request, response) => {
     });
 });
 
-app.use(validateFirebaseIdToken);
+app.use(verification);
 
 app.post("/risk-prevention", (request, response) => {
   const name = request.body.customer.name;

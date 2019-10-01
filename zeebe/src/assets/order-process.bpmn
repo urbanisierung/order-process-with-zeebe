@@ -183,8 +183,14 @@
         <zeebe:taskDefinition type="CAMUNDA-HTTP" retries="1" />
         <zeebe:taskHeaders>
           <zeebe:header key="method" value="POST" />
-          <zeebe:header key="url" value="${firebase-base-url}/token" />
+          <zeebe:header key="url" value="${auth-url}" />
         </zeebe:taskHeaders>
+        <zeebe:ioMapping>
+          <zeebe:input source="client_id" target="client_id" />
+          <zeebe:input source="client_secret" target="client_secret" />
+          <zeebe:input source="audience" target="audience" />
+          <zeebe:input source="grant_type" target="grant_type" />
+        </zeebe:ioMapping>
       </bpmn:extensionElements>
       <bpmn:incoming>SequenceFlow_0dy3vgv</bpmn:incoming>
       <bpmn:outgoing>SequenceFlow_13rpxcl</bpmn:outgoing>

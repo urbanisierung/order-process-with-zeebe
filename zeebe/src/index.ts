@@ -7,6 +7,10 @@ dotenv.config();
 const workflow = new Workflow();
 
 const orderEnvelope = {
+  client_id: process.env.OPZ_CLIENT_ID,
+  client_secret: process.env.OPZ_CLIENT_SECRET,
+  audience: process.env.OPZ_AUDIENCE,
+  grant_type: "client_credentials",
   id: v4(),
   orderCreatedAt: new Date().getTime(),
   customer: {
@@ -14,21 +18,21 @@ const orderEnvelope = {
     email: "i@adamurban.de"
   },
   payment: {
-    method: 'banktransfer'
+    method: "banktransfer"
   },
   orderLines: [
-      {
-          id: 42,
-          name: 'time machine',
-          count: 1,
-          price: '3500€'
-      },
-      {
-        id: 17,
-        name: 'traditional bag for time machine',
-        count: 1,
-        price: '25€'
+    {
+      id: 42,
+      name: "time machine",
+      count: 1,
+      price: "3500€"
     },
+    {
+      id: 17,
+      name: "traditional bag for time machine",
+      count: 1,
+      price: "25€"
+    }
   ],
   templateId: "d-322370cfd92e48888453509bf201a3c6"
 };

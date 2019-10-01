@@ -14,10 +14,14 @@ Configure the following worker variables:
 - firebase-base-url: this is the base url your firebase functions are deployed
 - giphy-api-key
 - sendgrid-api-key
+- auth-url: oauth url from auth0
 
+Configure auth stuff:
 
-todos:
+- auth0 m2m api and application
+  - client infos into env vars: `OPZ_CLIENT_ID`, `OPZ_CLIENT_SECRET`, `OPZ_AUDIENCE`
+  - symmetric secret into firebase env vars:
 
-- enable IAM api: https://console.cloud.google.com/apis/library/iam.googleapis.com?project=order-process-functions
-- add role *Service Account Token Creator* to default service account *App Engine default service account*
-
+```bash
+firebase functions:config:set auth.secret="xxx"
+```
