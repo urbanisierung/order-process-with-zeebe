@@ -42,7 +42,7 @@
         </zeebe:taskHeaders>
         <zeebe:taskDefinition type="CAMUNDA-HTTP" retries="1" />
         <zeebe:ioMapping>
-          <zeebe:output source="data" target="data" />
+          <zeebe:output source="data" target="giphyResponse" />
         </zeebe:ioMapping>
       </bpmn:extensionElements>
       <bpmn:incoming>SequenceFlow_1qve7e5</bpmn:incoming>
@@ -53,7 +53,7 @@
       <bpmn:extensionElements>
         <zeebe:taskHeaders>
           <zeebe:header key="method" value="POST" />
-          <zeebe:header key="url" value="${firebase-base-url}/customer-interaction/data" />
+          <zeebe:header key="url" value="${firebase-base-url}/customer-interaction/welcome-mail-data" />
         </zeebe:taskHeaders>
         <zeebe:taskDefinition type="CAMUNDA-HTTP" retries="1" />
       </bpmn:extensionElements>
@@ -65,9 +65,9 @@
       <bpmn:extensionElements>
         <zeebe:taskDefinition type="CAMUNDA-HTTP" retries="1" />
         <zeebe:ioMapping>
-          <zeebe:input source="from" target="from" />
-          <zeebe:input source="personalizations" target="personalizations" />
-          <zeebe:input source="template_id" target="template_id" />
+          <zeebe:input source="welcomeMail.from" target="from" />
+          <zeebe:input source="welcomeMail.personalizations" target="personalizations" />
+          <zeebe:input source="welcomeMail.template_id" target="template_id" />
         </zeebe:ioMapping>
         <zeebe:taskHeaders>
           <zeebe:header key="method" value="POST" />
@@ -131,7 +131,7 @@
       <bpmn:outgoing>SequenceFlow_1v4g9s6</bpmn:outgoing>
     </bpmn:exclusiveGateway>
     <bpmn:sequenceFlow id="SequenceFlow_0it9itf" name="Paypal" sourceRef="ExclusiveGateway_14z2o2r" targetRef="ExclusiveGateway_0xn1zku">
-      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">payment.method == 'paypal'</bpmn:conditionExpression>
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">orderEnvelope.payment.method == 'paypal'</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
     <bpmn:sequenceFlow id="SequenceFlow_1v4g9s6" sourceRef="ExclusiveGateway_0xn1zku" targetRef="ExclusiveGateway_0tn1rt1" />
     <bpmn:serviceTask id="ServiceTask_17vw0ay" name="Check bank transfer">
@@ -146,10 +146,10 @@
       <bpmn:outgoing>SequenceFlow_07okp6k</bpmn:outgoing>
     </bpmn:serviceTask>
     <bpmn:sequenceFlow id="SequenceFlow_0os9xzu" name="Bank transfer" sourceRef="ExclusiveGateway_14z2o2r" targetRef="ServiceTask_17vw0ay">
-      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">payment.method == 'banktransfer'</bpmn:conditionExpression>
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">orderEnvelope.payment.method == 'banktransfer'</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
     <bpmn:sequenceFlow id="SequenceFlow_12zmmt1" name="Credit card" sourceRef="ExclusiveGateway_14z2o2r" targetRef="ExclusiveGateway_0xn1zku">
-      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">payment.method == 'creditcard'</bpmn:conditionExpression>
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">orderEnvelope.payment.method == 'creditcard'</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
     <bpmn:exclusiveGateway id="ExclusiveGateway_0op4ynj" name="bank transfer successful?">
       <bpmn:incoming>SequenceFlow_07okp6k</bpmn:incoming>
@@ -186,10 +186,13 @@
           <zeebe:header key="url" value="${auth-url}" />
         </zeebe:taskHeaders>
         <zeebe:ioMapping>
-          <zeebe:input source="client_id" target="client_id" />
-          <zeebe:input source="client_secret" target="client_secret" />
-          <zeebe:input source="audience" target="audience" />
-          <zeebe:input source="grant_type" target="grant_type" />
+          <zeebe:input source="oauth.client_id" target="client_id" />
+          <zeebe:input source="oauth.client_secret" target="client_secret" />
+          <zeebe:input source="oauth.audience" target="audience" />
+          <zeebe:input source="oauth.grant_type" target="grant_type" />
+          <zeebe:output source="access_token" target="token.access_token" />
+          <zeebe:output source="expires_in" target="token.expires_in" />
+          <zeebe:output source="token_type" target="token.token_type" />
         </zeebe:ioMapping>
       </bpmn:extensionElements>
       <bpmn:incoming>SequenceFlow_0dy3vgv</bpmn:incoming>
@@ -236,15 +239,15 @@
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNShape id="EndEvent_10w0yiz_di" bpmnElement="EndEvent_10w0yiz">
-        <dc:Bounds x="1486" y="595" width="36" height="36" />
+        <dc:Bounds x="2047" y="595" width="36" height="36" />
         <bpmndi:BPMNLabel>
-          <dc:Bounds x="1470" y="638" width="68" height="14" />
+          <dc:Bounds x="2031" y="638" width="68" height="14" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge id="SequenceFlow_1n60cb6_di" bpmnElement="SequenceFlow_1n60cb6">
         <di:waypoint x="919" y="378" />
         <di:waypoint x="919" y="613" />
-        <di:waypoint x="1486" y="613" />
+        <di:waypoint x="2047" y="613" />
         <bpmndi:BPMNLabel>
           <dc:Bounds x="931" y="495" width="7" height="14" />
         </bpmndi:BPMNLabel>
@@ -292,15 +295,15 @@
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNShape id="EndEvent_04ayje0_di" bpmnElement="EndEvent_04ayje0">
-        <dc:Bounds x="1486" y="810" width="36" height="36" />
+        <dc:Bounds x="2047" y="810" width="36" height="36" />
         <bpmndi:BPMNLabel>
-          <dc:Bounds x="1474" y="853" width="60" height="14" />
+          <dc:Bounds x="2035" y="853" width="60" height="14" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge id="SequenceFlow_13jfd44_di" bpmnElement="SequenceFlow_13jfd44">
         <di:waypoint x="607" y="378" />
         <di:waypoint x="607" y="828" />
-        <di:waypoint x="1486" y="828" />
+        <di:waypoint x="2047" y="828" />
         <bpmndi:BPMNLabel>
           <dc:Bounds x="616" y="602" width="13" height="14" />
         </bpmndi:BPMNLabel>
@@ -383,15 +386,15 @@
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNShape id="EndEvent_1n6ubm5_di" bpmnElement="EndEvent_1n6ubm5">
-        <dc:Bounds x="1663" y="81" width="36" height="36" />
+        <dc:Bounds x="2047" y="81" width="36" height="36" />
         <bpmndi:BPMNLabel>
-          <dc:Bounds x="1646" y="124" width="71" height="27" />
+          <dc:Bounds x="2030" y="124" width="71" height="27" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge id="SequenceFlow_0kcqca0_di" bpmnElement="SequenceFlow_0kcqca0">
         <di:waypoint x="1492" y="191" />
         <di:waypoint x="1492" y="99" />
-        <di:waypoint x="1663" y="99" />
+        <di:waypoint x="2047" y="99" />
         <bpmndi:BPMNLabel>
           <dc:Bounds x="1501" y="142" width="13" height="14" />
         </bpmndi:BPMNLabel>

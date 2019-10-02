@@ -25,3 +25,14 @@ Configure auth stuff:
 ```bash
 firebase functions:config:set auth.secret="xxx"
 ```
+
+Set env vars:
+
+- `OPZ_CLIENT_ID`: oauth client id of m2m app in auth0
+- `OPZ_CLIENT_SECRET`: oauth client secret of m2m app in auth0
+- `OPZ_AUDIENCE`: audience of m2m app in auth0
+- `CC_CLUSTER_UUID`: cluster uuid in camunda cloud
+- `CC_BASE_URL`: base url to connect to camunda cloud
+- `CC_CLIENT_ID`: created client id of camunda cloud cluster
+- `CC_CLIENT_SECRET`: corresponding secret of client
+- `CC_AUTH_URL`: oauth url to get access tokens

@@ -1,0 +1,23 @@
+{
+  "name": "shop",
+  "version": "0.1.0",
+  "main": "server.js",
+  "dependencies": {
+    "dotenv": "^8.1.0",
+    "express": "^4.17.1",
+    "typescript": "3.6.2",
+    "uuid": "^3.3.3",
+    "zeebe-node": "^0.20.2",
+    "ts-node": "^8.3.0"
+  },
+  "devDependencies": {
+    "copyfiles": "^2.1.1"
+  },
+  "scripts": {
+    "start": "ts-node server.ts",
+    "build": "tsc --p tsconfig.json",
+    "dist": "node dist/server.js",
+    "copy:react": "copyfiles build/**/*.* dist/",
+    "test:react": "react-scripts test"
+  }
+}
