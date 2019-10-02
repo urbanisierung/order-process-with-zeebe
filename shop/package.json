@@ -1,0 +1,26 @@
+{
+  "name": "shop",
+  "version": "0.1.0",
+  "main": "server.js",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "dotenv": "^8.1.0",
+    "express": "^4.17.1",
+    "ts-node": "^8.3.0",
+    "typescript": "3.6.2",
+    "uuid": "^3.3.3",
+    "zeebe-node": "^0.20.2"
+  },
+  "devDependencies": {
+    "copyfiles": "^2.1.1"
+  },
+  "scripts": {
+    "start:backend": "ts-node server.ts",
+    "start:frontend": "npm run start --prefix ./frontend",
+    "build": "npm run build:backend && npm run build:frontend && npm run copy:frontend",
+    "build:backend": "tsc --p tsconfig.json",
+    "build:frontend": "npm run build --prefix ./frontend",
+    "dist": "node dist/server.js",
+    "copy:frontend": "copyfiles frontend/build/**/*.* dist/"
+  }
+}

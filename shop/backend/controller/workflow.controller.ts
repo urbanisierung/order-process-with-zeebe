@@ -1,6 +1,5 @@
 import * as ZB from "zeebe-node";
-import * as dotenv from 'dotenv';
-
+import * as dotenv from "dotenv";
 
 dotenv.config();
 
@@ -11,10 +10,9 @@ const clientId = process.env.CC_CLIENT_ID;
 const clientSecret = process.env.CC_CLIENT_SECRET;
 const authUrl = process.env.CC_AUTH_URL;
 
-const WORKFLOW = '../assets/order-process.bpmn';
-const WORKFLOW_ID = 'order-process';
+const WORKFLOW_ID = "order-process";
 
-export class Workflow {
+export class WorkflowController {
   private zeebeClient;
 
   constructor() {}
@@ -31,25 +29,12 @@ export class Workflow {
     });
   }
 
-  public async showTopology() {
-    console.log(`fetching topology`);
-    const topology = await this.zeebeClient.topology();
-    console.log(JSON.stringify(topology, null, 2));
-  }
-
   public async startWorkflow(data) {
     console.log(`starting workflow instance`);
     const result = await this.zeebeClient.createWorkflowInstance(
-      WORKFLOW_ID, data
+      WORKFLOW_ID,
+      data
     );
     console.log(result);
-  }
-
-  public async deployWorkflow() {
-    console.log(`deploying workflow instance`);
-    const result = await this.zeebeClient.deployWorkflow(
-      `${__dirname}/${WORKFLOW}`
-    );
-    console.log(JSON.stringify(result));
   }
 }
