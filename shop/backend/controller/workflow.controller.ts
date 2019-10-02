@@ -12,7 +12,7 @@ const authUrl = process.env.CC_AUTH_URL;
 
 const WORKFLOW_ID = "order-process";
 
-export class Workflow {
+export class WorkflowController {
   private zeebeClient;
 
   constructor() {}
