@@ -36,3 +36,5 @@ Set env vars:
 - `CC_CLIENT_ID`: created client id of camunda cloud cluster
 - `CC_CLIENT_SECRET`: corresponding secret of client
 - `CC_AUTH_URL`: oauth url to get access tokens
+
+shop deployed on digital ocean: http://139.59.157.127:8080/
