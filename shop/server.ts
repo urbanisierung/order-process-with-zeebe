@@ -10,9 +10,10 @@ app.use(bodyParser.json());
 
 app.use(express.static(path.join(__dirname, "frontend", "build")));
 
-app.post("/api/order", (req: Request, res: Response) => {
+app.post("/api/order", async (req: Request, res: Response) => {
   const customer = { name: req.body.name, email: req.body.email };
-  orderController.placeOrder(customer);
+  const result = await orderController.placeOrder(customer);
+  res.status(200).json(result);
 });
 
 app.get("/", function(req, res) {

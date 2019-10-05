@@ -36,5 +36,6 @@ export class WorkflowController {
       data
     );
     console.log(result);
+    return result;
   }
 }

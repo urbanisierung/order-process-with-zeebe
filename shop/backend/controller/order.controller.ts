@@ -8,7 +8,7 @@ export class OrderController {
     this.workflowController.setup();
   }
 
-  public placeOrder(customer) {
+  public async placeOrder(customer) {
     const payload = {
       id: v4(),
       creationTime: new Date().getTime(),
@@ -46,6 +46,7 @@ export class OrderController {
       }
     };
 
-    this.workflowController.startWorkflow(payload);
+    const result = await this.workflowController.startWorkflow(payload);
+    return result;
   }
 }
