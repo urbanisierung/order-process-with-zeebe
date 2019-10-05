@@ -1,11 +1,26 @@
 # Order process with zeebe and Camunda Cloud
 
+## Intro
+
+- Mike: Announcing Camunda Cloud: https://zeebe.io/blog/2019/09/announcing-camunda-cloud/
+- Bernd Rücker: https://blog.bernd-ruecker.com/camunda-cloud-the-why-the-what-and-the-how-8198f0a8c33b
+- Josh: Getting started: https://zeebe.io/blog/2019/09/getting-started-camunda-cloud/
+
+## Motivation
+
+order process with zeebe, serverless orchestration, free tier, service authentication
+
 ## Preconditions to run this demo
 
 - Camunda Cloud account to run workflow instances in the cloud
+  - apply here: https://zeebe.io/cloud/
+  - login here: https://camunda.io
 - Firebase account to deploy and execute Google Functions
+  - login here with your google account: https://firebase.google.com
 - Giphy account and API key to search for Gifs
+  - not really mandatory, but nice to search a gif
 - SendGrid account to send mails
+  - not mandatory, but cool to send a welcome mail from our order process
 
 ## Setup
 
