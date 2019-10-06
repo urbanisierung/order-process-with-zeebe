@@ -52,4 +52,4 @@ Set env vars:
 - `CC_CLIENT_SECRET`: corresponding secret of client
 - `CC_AUTH_URL`: oauth url to get access tokens
 
-shop deployed on digital ocean: https://139.59.157.127:8080/
+shop deployed on digital ocean: https://139.59.157.127:8080/ or https://zeebe.adamurban.de:8080/
