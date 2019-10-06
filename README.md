@@ -23,6 +23,7 @@ To get started with this project make sure you have the following accounts:
 - Google Account for your Firebase project
 - Sendgrid Account to send mails without maintaining a mai service
 - Giphy API accunt to search for appropriate gifs for you.
+- Cloud environment like AWS or Digital Ocean to deploy the shop frontend.
 
 order process with zeebe, serverless orchestration, free tier, service authentication
 
