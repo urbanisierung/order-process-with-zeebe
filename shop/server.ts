@@ -1,6 +1,8 @@
 import * as bodyParser from "body-parser";
 import * as express from "express";
 import { Request, Response } from "express";
+import * as https from "https";
+import * as fs from "fs";
 import * as path from "path";
 import { OrderController } from "./backend/controller/order.controller";
 
@@ -20,5 +22,18 @@ app.get("/", function(req, res) {
   res.sendFile(path.join(__dirname, "frontend", "build", "index.html"));
 });
 
-console.log("listening on port 8080");
-app.listen(process.env.PORT || 8080);
+if (process.env.OPZ_CERT) {
+  https
+    .createServer(
+      {
+        key: fs.readFileSync(`${process.env.OPZ_CERT}server.key`),
+        cert: fs.readFileSync(`${process.env.OPZ_CERT}server.cert`)
+      },
+      app
+    )
+    .listen(8080, () => {
+      console.log("listening on port 8080");
+    });
+} else {
+  app.listen(process.env.PORT || 8080);
+}
