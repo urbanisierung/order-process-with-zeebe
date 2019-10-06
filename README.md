@@ -1,12 +1,28 @@
 # Order process with zeebe and Camunda Cloud
 
+So you wanna implement an order process? Your welcome!
+
 ## Intro
 
-- Mike: Announcing Camunda Cloud: https://zeebe.io/blog/2019/09/announcing-camunda-cloud/
-- Bernd Rücker: https://blog.bernd-ruecker.com/camunda-cloud-the-why-the-what-and-the-how-8198f0a8c33b
-- Josh: Getting started: https://zeebe.io/blog/2019/09/getting-started-camunda-cloud/
+This is one of the first introductions to Camunda Cloud which was announced some weeks ago. With this project I want to show you how you can integrate with Camunda Cloud. Topics like orchestrating microservices especially Google Firebase Functions are described in this project to show you how an orchestration could look like.
+
+But before we start I would like to recommend some readings:
+
+- Mike announces [Camunda Cloud](https://zeebe.io/blog/2019/09/announcing-camunda-cloud/): he is the product manager of the core product - let him know what you're missing.
+- Bernd Rücker is one of the founders of Camunda. He explains [the advantages of cloud and the trend of a microservice implementaton](https://blog.bernd-ruecker.com/camunda-cloud-the-why-the-what-and-the-how-8198f0a8c33b)
+- Josh: In my career I never met someone like Josh, in a positive way. Get started with the camuna cloud by reading his blog [post](https://zeebe.io/blog/2019/09/getting-started-camunda-cloud/)
 
 ## Motivation
+
+Via the intro I've already introduced some very cool readings about Camunda Cloud. Someone could ask: why another project to learn about BPMN or especially a BPMN cloud solution. From my point of view the answer is very easy: In my career I've also build order processes. I know the pain the difficulties introducing it. Well, to be honest, with Camunda Cloud it's straight forward. Let me show you with this project.
+
+Let me show you how to secure serice request with standard JSON web tokens, orchestrate services with a BPMN process and of course send a welcome mail as introducton ;)
+
+To get started with this project make sure you have the following accounts:
+
+- Google Account for your Firebase project
+- Sendgrid Account to send mails without maintaining a mai service
+- Giphy API accunt to search for appropriate gifs for you.
 
 order process with zeebe, serverless orchestration, free tier, service authentication
 
