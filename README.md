@@ -8,9 +8,9 @@ This is one of the first introductions to Camunda Cloud which was announced some
 
 But before we start I would like to recommend some readings:
 
-- Mike announces [Camunda Cloud](https://zeebe.io/blog/2019/09/announcing-camunda-cloud/): he is the product manager of the core product - let him know what you're missing.
+- Mike announces [Camunda Cloud](https://zeebe.io/blog/2019/09/announcing-camunda-cloud/): he is the product manager of the core product: zeebe - let him know what you're missing.
 - Bernd Rücker is one of the founders of Camunda. He explains [the advantages of cloud and the trend of a microservice implementaton](https://blog.bernd-ruecker.com/camunda-cloud-the-why-the-what-and-the-how-8198f0a8c33b)
-- Josh: In my career I never met someone like Josh, in a positive way. Get started with the camuna cloud by reading his blog [post](https://zeebe.io/blog/2019/09/getting-started-camunda-cloud/)
+- Josh: In my career I never met someone like Josh, in a very positive way. Get started with the camuna cloud by reading his blog [post](https://zeebe.io/blog/2019/09/getting-started-camunda-cloud/)
 
 ## Motivation
 
