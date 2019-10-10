@@ -44,7 +44,5 @@ const payload = {
 };
 
 workflow.setup().then(() => {
-  workflow.deployWorkflow().then(() => {
-    workflow.startWorkflow(payload);
-  });
+  workflow.deployWorkflow();
 });
