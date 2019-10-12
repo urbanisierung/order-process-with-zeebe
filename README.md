@@ -33,6 +33,14 @@ The order process consists of a few nodes, a few gateways, and a few end nodes, 
 
 ![order process](./assets/order-process.png)
 
+As already mentioned, it is a very simple workflow, but it should clarify how the Zeebe Engine can be used as SaaS:
+
+- At the beginning, a token is requested for the process, which is then passed as JSON web tokens to the Firebase functions for authentication in the following steps.
+- The CamundaCloud comes with a ready-to-use http worker so that service calls can be configured very easily. Necessary parameters, so-called worker variables, can be configured in the Cloud Console, which can be set in Service Tasks in the form `${variableName}`. This can be seen in any node.
+- Unfortunately process variables cannot be set as header information of an http call until now. For this reason the token is not passed in the header but in the body.
+- Parallel paths are possible, to see when checking the payment data and sending the welcome mail.
+
+
 
 
 
