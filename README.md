@@ -1,5 +1,44 @@
 # Order process with zeebe and Camunda Cloud
 
+So you want to play with Zeebe? I have a very good use case for it from my point of view. And exactly for this reason this project was born. In September 2019 Camunda Cloud was presented at the CamundaCon. This makes the execution of processes even easier, because the engine is now offered as a SaaS. If you want to learn more about this, I recommend the following readings:
+
+- Mike introduces CamundaClud.
+- Bernd Rücker as one of the founders gives a first impression of the offer.
+- A Getting Started by Josh
+
+## No hurdle to get started
+
+From my own experience I know what it means to build order processes. Executable workflows offer two major advantages: software is no longer written exclusively with code, and the notation serves documentation that business people can easily understand. However, in the past we always had to take care of much more than just our own business logic - but with the rise of more and more SaaS offerings, the cloud and the serverless approach we finally have more time to deal with the actual issues.
+
+Here I would like to show how easy it is to model, deploy and execute a workflows (that is admittedly very simple). Services are orchestrated that are provisioned as serverless functions on Google Firebase and other services like the Giphy API and the Sendgrid API for sending emails. The serverless functions are secured by OAuth tokens that are received during process execution.
+
+A really very simple shop application starts an order process for a logged-in user. I've tried to use only services that have a free tier, so you can easily run the examples yourself. Of course you are free to fork and make your own customizations ;)
+
+In summary, you need an account for the following services:
+
+- CamundaCloud
+- Auth0
+- Google Firebase
+- Giphy (optional)
+- SendGrid (optional)
+- DigitalOcean (optional)
+
+Enough writing. Let's hack!
+
+## Some insights
+
+### The order process
+
+The order process consists of a few nodes, a few gateways, and a few end nodes, each of which indicates the reason for the completion. Zeebe workflows are modeled with the Zeebe Modeler. So far it has only been usable as a standalone desktop application:
+
+![order process](./assets/order-process.png)
+
+
+
+
+
+
+
 So you wanna implement an order process? Your welcome!
 
 ## Intro
