@@ -2,9 +2,9 @@
 
 So you want to play with Zeebe? I have a very good use case for it from my point of view. And exactly for this reason this project was born. In September 2019 Camunda Cloud was presented at the CamundaCon. This makes the execution of processes even easier, because the engine is now offered as a SaaS. If you want to learn more about this, I recommend the following readings:
 
-- Mike introduces CamundaClud.
-- Bernd Rücker as one of the founders gives a first impression of the offer.
-- A Getting Started by Josh
+- Mike [introduces Camunda Cloud](https://zeebe.io/blog/2019/09/announcing-camunda-cloud/)
+- Bernd Rücker as one of the founders gives [a first impression of the offer.](https://blog.bernd-ruecker.com/camunda-cloud-the-why-the-what-and-the-how-8198f0a8c33b)
+- A [Getting Started](https://zeebe.io/blog/2019/09/getting-started-camunda-cloud/) by Josh
 
 ## No hurdle to get started
 
@@ -42,9 +42,44 @@ As already mentioned, it is a very simple workflow, but it should clarify how th
 
 
 
+### Vorbereitung in der Cloud Console
 
+Bevor du anfangen kannst einen Prozess zu deployen bzw. eine Instanz zu starten brauchst du einen Cluster. Lege über die Console ein und lege einen neuen Cluster an.
 
+#### Worker Variablen
 
+Lege die folgenden Worker Variablen an, die später von den Workern verarbeitet werden:
+
+- `firebase-base-url`: die base URL erhältst du über die das Firebase Dashboard und wird in etwa so aussehen: `https://us-central1-${firebase-project}.cloudfunctions.net/app`
+- `giphy-api-key`: mit dem API Key kann der Prozess über die Gipy API ein zufälliges Gif suchen
+- `sendgrid-api-key`: Voraussetzung, um über SendGrid EMails zu verschicken.
+- `auth-url`: OAuth URL, über die der Prozess ein Token anfragen kann: `https://[project].auth0.com/oauth/token`
+
+#### Client anlegen
+
+Um von außen mit dem Zeebe Broken interagieren zu können braucht ein Client ein gültiges Token. Das Token wird ausgestellt mit gültigen Client Credentials. Dafür musst du lediglich einen Client in der Console anlegen.
+
+#### Auth0, Firebase, SendGrid, Giphy
+
+Diese Dienste werden in diesem Use Case genutzt (wir wollen uns schließlich um unsere Business Logic kümmern und keine Kernkompetenz aufbauen bei Themen wie Identität oder E-Mailing):
+
+- Auth0: Identity Provider für den Shop und die Auftragsprozesse. Lege einen Account und zwei Applikationen an: eine Webapplikation und eine Machine-2-Machine Applikation
+- Firebase: Compute Infrastruktur - lege ein Functions Projekt an.
+- SendGrid: E-Mail Dienst - Account anlegen und einen API-Key erzeugen
+- Giphy: Gif Datenbank - Registrieren und API-Key für die REST-API holen
+
+#### Umgebungsvariablen
+
+Die folgenden Umgebungsvariablen enthalten Infos, die nicht ins Repo gehören, die aber unser Setup benötigt, damit es funktioniert (OPZ steht hier für **o**rder-**p**rocess-**z**eebe):
+
+- `OPZ_CLIENT_ID`: OAuth Client  oauth client id of m2m app in auth0
+- `OPZ_CLIENT_SECRET`: oauth client secret of m2m app in auth0
+- `OPZ_AUDIENCE`: audience of m2m app in auth0
+- `CC_CLUSTER_UUID`: cluster uuid in camunda cloud
+- `CC_BASE_URL`: base url to connect to camunda cloud
+- `CC_CLIENT_ID`: created client id of camunda cloud cluster
+- `CC_CLIENT_SECRET`: corresponding secret of client
+- `CC_AUTH_URL`: oauth url to get access tokens
 
 
 So you wanna implement an order process? Your welcome!
