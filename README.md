@@ -42,46 +42,45 @@ As already mentioned, it is a very simple workflow, but it should clarify how th
 - Unfortunately process variables cannot be set as header information of an http call until now. For this reason the token is not passed in the header but in the body.
 - Parallel paths are possible, to see when checking the payment data and sending the welcome mail.
 
+### Preparation in the Cloud Console
 
+Before you can start deploying a process or starting an instance you need a cluster. Login to the console and create a new cluster.
 
-### Vorbereitung in der Cloud Console
+#### Worker variables
 
-Bevor du anfangen kannst einen Prozess zu deployen bzw. eine Instanz zu starten brauchst du einen Cluster. Lege über die Console ein und lege einen neuen Cluster an.
+Create the following worker variables, which will later be processed by the workers:
 
-#### Worker Variablen
+- `firebase-base-url`: you get the base URL from the Firebase Dashboard and will look like this: `https://us-central1-${firebase-project}.cloudfunctions.net/app`.
+- `giphy-api-key`: with the API key the process can search for a random gif via the Gipy API
+- `sendgrid-api-key`: Prerequisite for sending e-mails via SendGrid.
+- `auth-url`: OAuth URL, via which the process can request a token: `https://[project].auth0.com/oauth/token`.
 
-Lege die folgenden Worker Variablen an, die später von den Workern verarbeitet werden:
+#### Create client
 
-- `firebase-base-url`: die base URL erhältst du über die das Firebase Dashboard und wird in etwa so aussehen: `https://us-central1-${firebase-project}.cloudfunctions.net/app`
-- `giphy-api-key`: mit dem API Key kann der Prozess über die Gipy API ein zufälliges Gif suchen
-- `sendgrid-api-key`: Voraussetzung, um über SendGrid EMails zu verschicken.
-- `auth-url`: OAuth URL, über die der Prozess ein Token anfragen kann: `https://[project].auth0.com/oauth/token`
-
-#### Client anlegen
-
-Um von außen mit dem Zeebe Broken interagieren zu können braucht ein Client ein gültiges Token. Das Token wird ausgestellt mit gültigen Client Credentials. Dafür musst du lediglich einen Client in der Console anlegen.
+In order to interact with the Zeebe Broken from the outside, a client needs a valid token. The token is issued with valid client credentials. All you have to do is create a client in the console.
 
 #### Auth0, Firebase, SendGrid, Giphy
 
-Diese Dienste werden in diesem Use Case genutzt (wir wollen uns schließlich um unsere Business Logic kümmern und keine Kernkompetenz aufbauen bei Themen wie Identität oder E-Mailing):
+These services are used in this use case (after all, we want to take care of our business logic and not build a core competency on issues like identity or emailing):
 
-- Auth0: Identity Provider für den Shop und die Auftragsprozesse. Lege einen Account und zwei Applikationen an: eine Single Page Application und eine Machine-2-Machine Application
-- Firebase: Compute Infrastruktur - lege ein Functions Projekt an.
-- SendGrid: E-Mail Dienst - Account anlegen und einen API-Key erzeugen
-- Giphy: Gif Datenbank - Registrieren und API-Key für die REST-API holen
+- Auth0: Identity provider for the shop and the order processes. Create an account and two applications: a single page application and a machine-2-machine application.
+- Firebase: Compute Infrastructure - create a Functions project.
+- SendGrid: E-Mail Service - Create account and create an API-Key.
+- Giphy: Gif Database - Register and Get API Key for REST-API
 
-#### Umgebungsvariablen
+#### Environment variables
 
-Die folgenden Umgebungsvariablen enthalten Infos, die nicht ins Repo gehören, die aber unser Setup benötigt, damit es funktioniert (OPZ steht hier für **o**rder-**p**rocess-**z**eebe):
+The following environment variables contain info that doesn't belong in the repo, but our setup needs it to work (OPZ here stands for **o**rder-**p**rocess-**z**eebe):
 
-- `OPZ_CLIENT_ID`: OAuth Client ID der M2M Application (Auth0)
-- `OPZ_CLIENT_SECRET`: OAuth Client Secret der M2M Application (Auth0)
-- `OPZ_AUDIENCE`: OAuth Audience der M2M Application (Auth0)
+- `OPZ_CLIENT_ID`: OAuth Client ID of the M2M Application (Auth0)
+- `OPZ_CLIENT_SECRET`: OAuth Client Secret of the M2M Application (Auth0)
+- `OPZ_AUDIENCE`: OAuth Audience of the M2M Application (Auth0)
 - `CC_CLUSTER_UUID`: Cluster UUID (Camunda Cloud Console)
-- `CC_BASE_URL`: Base URL für zeebe (Camunda Cloud Console) - `zeebe.camunda.io`
+- `CC_BASE_URL`: Base URL for zeebe (Camunda Cloud Console) - `zeebe.camunda.io`
 - `CC_CLIENT_ID`: Client ID (Camunda Cloud Console)
 - `CC_CLIENT_SECRET`: Client Secret (Camunda Cloud Console)
 - `CC_AUTH_URL`: OAuth URL to request client tokens - `https://login.cloud.camunda.io/oauth/token`
+
 
 
 So you wanna implement an order process? Your welcome!
