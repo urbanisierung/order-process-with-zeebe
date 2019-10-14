@@ -23,6 +23,8 @@ In summary, you need an account for the following services:
 - SendGrid (optional)
 - DigitalOcean (optional)
 
+![systems overview](./assets/systems-overview.png)
+
 Enough writing. Let's hack!
 
 ## Some insights
@@ -63,7 +65,7 @@ Um von außen mit dem Zeebe Broken interagieren zu können braucht ein Client ei
 
 Diese Dienste werden in diesem Use Case genutzt (wir wollen uns schließlich um unsere Business Logic kümmern und keine Kernkompetenz aufbauen bei Themen wie Identität oder E-Mailing):
 
-- Auth0: Identity Provider für den Shop und die Auftragsprozesse. Lege einen Account und zwei Applikationen an: eine Webapplikation und eine Machine-2-Machine Applikation
+- Auth0: Identity Provider für den Shop und die Auftragsprozesse. Lege einen Account und zwei Applikationen an: eine Single Page Application und eine Machine-2-Machine Application
 - Firebase: Compute Infrastruktur - lege ein Functions Projekt an.
 - SendGrid: E-Mail Dienst - Account anlegen und einen API-Key erzeugen
 - Giphy: Gif Datenbank - Registrieren und API-Key für die REST-API holen
@@ -72,14 +74,14 @@ Diese Dienste werden in diesem Use Case genutzt (wir wollen uns schließlich um 
 
 Die folgenden Umgebungsvariablen enthalten Infos, die nicht ins Repo gehören, die aber unser Setup benötigt, damit es funktioniert (OPZ steht hier für **o**rder-**p**rocess-**z**eebe):
 
-- `OPZ_CLIENT_ID`: OAuth Client  oauth client id of m2m app in auth0
-- `OPZ_CLIENT_SECRET`: oauth client secret of m2m app in auth0
-- `OPZ_AUDIENCE`: audience of m2m app in auth0
-- `CC_CLUSTER_UUID`: cluster uuid in camunda cloud
-- `CC_BASE_URL`: base url to connect to camunda cloud
-- `CC_CLIENT_ID`: created client id of camunda cloud cluster
-- `CC_CLIENT_SECRET`: corresponding secret of client
-- `CC_AUTH_URL`: oauth url to get access tokens
+- `OPZ_CLIENT_ID`: OAuth Client ID der M2M Application (Auth0)
+- `OPZ_CLIENT_SECRET`: OAuth Client Secret der M2M Application (Auth0)
+- `OPZ_AUDIENCE`: OAuth Audience der M2M Application (Auth0)
+- `CC_CLUSTER_UUID`: Cluster UUID (Camunda Cloud Console)
+- `CC_BASE_URL`: Base URL für zeebe (Camunda Cloud Console) - `zeebe.camunda.io`
+- `CC_CLIENT_ID`: Client ID (Camunda Cloud Console)
+- `CC_CLIENT_SECRET`: Client Secret (Camunda Cloud Console)
+- `CC_AUTH_URL`: OAuth URL to request client tokens - `https://login.cloud.camunda.io/oauth/token`
 
 
 So you wanna implement an order process? Your welcome!
