@@ -27,7 +27,7 @@ In summary, you need an account for the following services:
 
 Enough writing. Let's hack!
 
-## Some insights
+## Some insights and pre-conditions
 
 ### The order process
 
@@ -51,24 +51,28 @@ Before you can start deploying a process or starting an instance you need a clus
 Create the following worker variables, which will later be processed by the workers:
 
 - `firebase-base-url`: you get the base URL from the Firebase Dashboard and will look like this: `https://us-central1-${firebase-project}.cloudfunctions.net/app`.
-- `giphy-api-key`: with the API key the process can search for a random gif via the Gipy API
+- `giphy-api-key`: with the API key we can uses services to search for a random gif via the Giphy API
 - `sendgrid-api-key`: Prerequisite for sending e-mails via SendGrid.
 - `auth-url`: OAuth URL, via which the process can request a token: `https://[project].auth0.com/oauth/token`.
 
+![worker variables](./assets/worker-variables.png)
+
 #### Create client
 
-In order to interact with the Zeebe Broken from the outside, a client needs a valid token. The token is issued with valid client credentials. All you have to do is create a client in the console.
+In order to interact with the Zeebe broker from the outside, a client needs a valid token. The token is issued with valid client credentials. All you have to do is create a client in the console.
 
-#### Auth0, Firebase, SendGrid, Giphy
+![client](./assets/camunda-cloud-console-details.png)
+
+### Auth0, Firebase, SendGrid, Giphy
 
 These services are used in this use case (after all, we want to take care of our business logic and not build a core competency on issues like identity or emailing):
 
 - Auth0: Identity provider for the shop and the order processes. Create an account and two applications: a single page application and a machine-2-machine application.
-- Firebase: Compute Infrastructure - create a Functions project.
-- SendGrid: E-Mail Service - Create account and create an API-Key.
-- Giphy: Gif Database - Register and Get API Key for REST-API
+- Firebase: Compute infrastructure - create a Functions project.
+- SendGrid: E-mail service - create an account and an API-Key.
+- Giphy: Gif Database - Register and get API Key for REST-API
 
-#### Environment variables
+### Environment variables
 
 The following environment variables contain info that doesn't belong in the repo, but our setup needs it to work (OPZ here stands for **o**rder-**p**rocess-**z**eebe):
 
@@ -81,75 +85,52 @@ The following environment variables contain info that doesn't belong in the repo
 - `CC_CLIENT_SECRET`: Client Secret (Camunda Cloud Console)
 - `CC_AUTH_URL`: OAuth URL to request client tokens - `https://login.cloud.camunda.io/oauth/token`
 
+## Let's deploy and start
 
+### Deploy firebase functions
 
-So you wanna implement an order process? Your welcome!
+Go to:
 
-## Intro
+```bash
+cd functions
+```
 
-This is one of the first introductions to Camunda Cloud which was announced some weeks ago. With this project I want to show you how you can integrate with Camunda Cloud. Topics like orchestrating microservices especially Google Firebase Functions are described in this project to show you how an orchestration could look like.
-
-But before we start I would like to recommend some readings:
-
-- Mike announces [Camunda Cloud](https://zeebe.io/blog/2019/09/announcing-camunda-cloud/): he is the product manager of the core product: zeebe - let him know what you're missing.
-- Bernd Rücker is one of the founders of Camunda. He explains [the advantages of cloud and the trend of a microservice implementaton](https://blog.bernd-ruecker.com/camunda-cloud-the-why-the-what-and-the-how-8198f0a8c33b)
-- Josh: In my career I never met someone like Josh, in a very positive way. Get started with the camuna cloud by reading his blog [post](https://zeebe.io/blog/2019/09/getting-started-camunda-cloud/)
-
-## Motivation
-
-Via the intro I've already introduced some very cool readings about Camunda Cloud. Someone could ask: why another project to learn about BPMN or especially a BPMN cloud solution. From my point of view the answer is very easy: In my career I've also build order processes. I know the pain the difficulties introducing it. Well, to be honest, with Camunda Cloud it's straight forward. Let me show you with this project.
-
-Let me show you how to secure serice request with standard JSON web tokens, orchestrate services with a BPMN process and of course send a welcome mail as introducton ;)
-
-To get started with this project make sure you have the following accounts:
-
-- Google Account for your Firebase project
-- Sendgrid Account to send mails without maintaining a mai service
-- Giphy API accunt to search for appropriate gifs for you.
-- Cloud environment like AWS or Digital Ocean to deploy the shop frontend.
-
-order process with zeebe, serverless orchestration, free tier, service authentication
-
-## Preconditions to run this demo
-
-- Camunda Cloud account to run workflow instances in the cloud
-  - apply here: https://zeebe.io/cloud/
-  - login here: https://camunda.io
-- Firebase account to deploy and execute Google Functions
-  - login here with your google account: https://firebase.google.com
-- Giphy account and API key to search for Gifs
-  - not really mandatory, but nice to search a gif
-- SendGrid account to send mails
-  - not mandatory, but cool to send a welcome mail from our order process
-
-## Setup
-
-Configure the following worker variables:
-
-- firebase-base-url: this is the base url your firebase functions are deployed
-- giphy-api-key
-- sendgrid-api-key
-- auth-url: oauth url from auth0
-
-Configure auth stuff:
-
-- auth0 m2m api and application
-  - client infos into env vars: `OPZ_CLIENT_ID`, `OPZ_CLIENT_SECRET`, `OPZ_AUDIENCE`
-  - symmetric secret into firebase env vars:
+In Auth0 we have chosen a symmetric token encryption. So that our functions can check whether a token is valid, we have to make the corresponding secret known. For this we set an environment variable (`xxx` corresponds to `$OPZ_CLIENT_SECRET`):
 
 ```bash
 firebase functions:config:set auth.secret="xxx"
 ```
 
-Set env vars:
+Now deploy the functions:
 
-- `OPZ_CLIENT_ID`: oauth client id of m2m app in auth0
-- `OPZ_CLIENT_SECRET`: oauth client secret of m2m app in auth0
-- `OPZ_AUDIENCE`: audience of m2m app in auth0
-- `CC_CLUSTER_UUID`: cluster uuid in camunda cloud
-- `CC_BASE_URL`: base url to connect to camunda cloud
-- `CC_CLIENT_ID`: created client id of camunda cloud cluster
-- `CC_CLIENT_SECRET`: corresponding secret of client
-- `CC_AUTH_URL`: oauth url to get access tokens
+```bash
+npm run deploy
+```
 
-shop deployed on digital ocean: http://139.59.157.127:8080/
+### Deploy order process
+
+```bash
+cd zeebe
+npm install
+npm run start
+```
+
+In Operate you should now see the deployed workflow:
+
+![operate](./assets/oprate-deployed-workflow.png)
+
+### Start shop
+
+```bash
+cd shop
+npm install
+npm run start
+```
+
+The shop frontend is delivered on port `8080`. Log in, go to your profile and click **order**.
+
+Then you can use the Cloud Console to jump to Operate and see your instance.
+
+Alternatively you can find the frontend at [https://zeebe.adamurban.de:8080](https://zeebe.adamurban.de:8080) (if I haven't cleared it already).
+
+Have fun!

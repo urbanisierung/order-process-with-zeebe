@@ -17,6 +17,7 @@
   "scripts": {
     "start:backend": "ts-node server.ts",
     "start:frontend": "npm run start --prefix ./frontend",
+    "start": "npm run build && npm run dist",
     "build": "npm run build:backend && npm run build:frontend && npm run copy:frontend",
     "build:backend": "tsc --p tsconfig.json",
     "build:frontend": "npm run build --prefix ./frontend",
