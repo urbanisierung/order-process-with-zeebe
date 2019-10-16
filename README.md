@@ -127,7 +127,11 @@ npm install
 npm run start
 ```
 
+![shop](./assets/mighty-zeebe-shop.png)
+
 The shop frontend is delivered on port `8080`. Log in, go to your profile and click **order**.
+
+![shop](./assets/mighty-zeebe-shop-order-now.png)
 
 Then you can use the Cloud Console to jump to Operate and see your instance.
 
