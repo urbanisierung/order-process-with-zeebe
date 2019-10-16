@@ -1,12 +1,20 @@
 # Order process with zeebe and Camunda Cloud
 
-So you want to play with Zeebe? I have a very good use case for it from my point of view. And exactly for this reason this project was born. In September 2019 Camunda Cloud was presented at the CamundaCon. This makes the execution of processes even easier, because the engine is now offered as a SaaS. If you want to learn more about this, I recommend the following readings:
+## TL;DR
+
+Easily build an order process with Zeebe in Camunda Cloud and orchestrate services via the built-in http worker. Learn how to deploy your own serverless functions and orchestrate them with Zeebe.
+
+![shop-to-process](./assets/order-process-with-zeebe.gif)
+
+## Intro
+
+So you heard about [Zeebe](https://zeebe.io/) and want to play with it? Or you just want to build a process and need a blueprint? Then you're in the right place, because that's exactly what I did this project for. In September 2019 Camunda Cloud was presented at the CamundaCon. This makes the execution of processes even easier, because the engine is now offered as a SaaS. If you want to learn more about this, I recommend the following readings:
 
 - Mike [introduces Camunda Cloud](https://zeebe.io/blog/2019/09/announcing-camunda-cloud/)
 - Bernd Rücker as one of the founders gives [a first impression of the offer.](https://blog.bernd-ruecker.com/camunda-cloud-the-why-the-what-and-the-how-8198f0a8c33b)
-- A [Getting Started](https://zeebe.io/blog/2019/09/getting-started-camunda-cloud/) by Josh
+- A great [Getting Started](https://zeebe.io/blog/2019/09/getting-started-camunda-cloud/) by Josh
 
-## No hurdle to get started
+## Riding off
 
 From my own experience I know what it means to build order processes. Executable workflows offer two major advantages: software is no longer written exclusively with code, and the notation serves documentation that business people can easily understand. However, in the past we always had to take care of much more than just our own business logic - but with the rise of more and more SaaS offerings, the cloud and the serverless approach we finally have more time to deal with the actual issues.
 
@@ -16,31 +24,36 @@ A really very simple shop application starts an order process for a logged-in us
 
 In summary, you need an account for the following services:
 
-- CamundaCloud
-- Auth0
-- Google Firebase
-- Giphy (optional)
-- SendGrid (optional)
-- DigitalOcean (optional)
+- [Camunda Cloud](https://camunda.io) - Workflow Engine
+- [Auth0](https://auth0.com/) - Identity Management
+- [Google Firebase (Functions)](https://firebase.google.com/) - Serverless Functions
+- [Giphy](https://developers.giphy.com/) - Gif database
+- [SendGrid](https://sendgrid.com/) - E-mail service
+- [DigitalOcean](https://www.digitalocean.com/) - Infrastructure
+
+This is how the systems interact in this project:
 
 ![systems overview](./assets/systems-overview.png)
 
-Enough writing. Let's hack!
+Nuff writing. **Let's hack**!
 
 ## Some insights and pre-conditions
 
 ### The order process
 
-The order process consists of a few nodes, a few gateways, and a few end nodes, each of which indicates the reason for the completion. Zeebe workflows are modeled with the Zeebe Modeler. So far it has only been usable as a standalone desktop application:
+The order process consists of a few nodes, a few gateways, and a few end nodes, each of which indicates the reason for the completion. Zeebe workflows are modeled with the [Zeebe Modeler](https://github.com/zeebe-io/zeebe-modeler). So far it has only been usable as a standalone desktop application:
 
 ![order process](./assets/order-process.png)
 
 As already mentioned, it is a very simple workflow, but it should clarify how the Zeebe Engine can be used as SaaS:
 
-- At the beginning, a token is requested for the process, which is then passed as JSON web tokens to the Firebase functions for authentication in the following steps.
-- The CamundaCloud comes with a ready-to-use http worker so that service calls can be configured very easily. Necessary parameters, so-called worker variables, can be configured in the Cloud Console, which can be set in Service Tasks in the form `${variableName}`. This can be seen in any node.
+- At the beginning, a token is requested for the process, which is then passed as JSON web token to the Firebase functions for authentication in the following steps.
+- The Camunda Cloud comes with a ready-to-use http worker so that service calls can be configured very easily. Necessary parameters, so-called worker variables, can be configured in the Cloud Console, which can be set in Service Tasks in the form `${variableName}`. This can be seen in any node.
+
+![zeebe-modeler](./assets/zeebe-modeler.png)
+
 - Unfortunately process variables cannot be set as header information of an http call until now. For this reason the token is not passed in the header but in the body.
-- Parallel paths are possible, to see when checking the payment data and sending the welcome mail.
+- Parallel process paths are possible, to see when checking the payment data and sending the welcome mail.
 
 ### Preparation in the Cloud Console
 
@@ -67,10 +80,10 @@ In order to interact with the Zeebe broker from the outside, a client needs a va
 
 These services are used in this use case (after all, we want to take care of our business logic and not build a core competency on issues like identity or emailing):
 
-- Auth0: Identity provider for the shop and the order processes. Create an account and two applications: a single page application and a machine-2-machine application.
-- Firebase: Compute infrastructure - create a Functions project.
-- SendGrid: E-mail service - create an account and an API-Key.
-- Giphy: Gif Database - Register and get API Key for REST-API
+- [Auth0](https://auth0.com/): Identity provider for the shop and the order processes. Create an account and two applications: a single page application and a machine-2-machine application.
+- [Google Firebase (Functions)](https://firebase.google.com/): Compute infrastructure - create a Functions project.
+- [SendGrid](https://sendgrid.com/): E-mail service - create an account and an API-Key.
+- [Giphy](https://developers.giphy.com/): Gif Database - Register and get API Key for REST-API
 
 ### Environment variables
 
@@ -88,8 +101,6 @@ The following environment variables contain info that doesn't belong in the repo
 ## Let's deploy and start
 
 ### Deploy firebase functions
-
-Go to:
 
 ```bash
 cd functions
