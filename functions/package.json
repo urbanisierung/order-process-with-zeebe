@@ -20,7 +20,7 @@
     "firebase": "^7.0.0",
     "firebase-admin": "^8.0.0",
     "firebase-functions": "^3.1.0",
-    "got": "^9.6.0",
+    "got": "^12.5.3",
     "jsonwebtoken": "^8.5.1",
     "request": "^2.88.0"
   },
